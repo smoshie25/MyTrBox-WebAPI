@@ -15,9 +15,9 @@ namespace MyTrBox_WebAPI.Model
         public string Profile { get; set; }
 
         // Foreign Key
-        public Guid GenreId { get; set; }
+        public Guid CategoryId { get; set; }
         // Navigation property
-        public Genre Genre { get; set; }
+        public Category Category { get; set; }
         public ICollection<Song> Songs { get; set; }
     }
 }

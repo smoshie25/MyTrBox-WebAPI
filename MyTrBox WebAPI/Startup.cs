@@ -93,7 +93,8 @@ namespace MyTrBox_WebAPI
 
             services.AddScoped<IArtist, ArtistService>();
             services.AddScoped<IAccount, RegisterService>();
-            services.AddScoped<IGenre, GenreService>();
+            services.AddScoped<ICategory, CategoryService>();
+            services.AddScoped<ISong, SongService>();
 
             services.AddAutoMapper(
                 options => options.AddProfile<MapingProfile>(), typeof(Startup));

@@ -8,9 +8,11 @@ namespace MyTrBox_WebAPI.Model
     public class Song
 {
         public Guid SongId { get; set; }
-        public Guid GenreId { get; set; }
+        public Guid CategoryId { get; set; }
         public Guid ArtistId { get; set; }
         public string Title { get; set; }
+        public string Media { get; set; }
+        public string Image { get; set; }
         public Artist Artist { get; set; }
     }
 }

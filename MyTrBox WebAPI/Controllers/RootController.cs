@@ -18,8 +18,9 @@ namespace MyTrBox_WebAPI.Controllers
             var response = new RootResponse
             {
                 Self = Link.To(nameof(GetRoot)),
-                Genre = Link.ToCollection(nameof(GenreController.GetGenre)),
+                Category = Link.ToCollection(nameof(CategoryController.GetGenre)),
                 Artist = Link.ToCollection(nameof(ArtistController.GetArtist)),
+                Song = Link.ToCollection(nameof(SongController.GetSong)),
                 
             };
 

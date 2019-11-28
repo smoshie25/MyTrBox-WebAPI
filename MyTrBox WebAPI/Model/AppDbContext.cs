@@ -16,7 +16,7 @@ namespace MyTrBox_WebAPI.Model
 
 
         public DbSet<Artist> Artist { set; get; }
-        public DbSet<Genre> Genre { set; get; }
+        public DbSet<Category> Category { set; get; }
         public DbSet<Song> Song { get; set; }
     }
 }

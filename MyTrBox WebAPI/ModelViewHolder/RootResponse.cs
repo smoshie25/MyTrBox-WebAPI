@@ -9,6 +9,7 @@ namespace MyTrBox_WebAPI.ModelViewHolder
     public class RootResponse : Resource
     {
         public Link Artist { get; set; }
-        public Link Genre { get; set; }
+        public Link Category { get; set; }
+        public Link Song { get; set; }
     }
 }

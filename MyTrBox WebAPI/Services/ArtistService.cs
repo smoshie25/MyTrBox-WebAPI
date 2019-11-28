@@ -28,7 +28,7 @@ namespace MyTrBox_WebAPI.Services
 
         public async Task<PagedResult<ArtistView>> GetAllArtistAsync(PagingOptions pagingOptions)
         {
-            var query = db.Artist.ProjectTo<ArtistView>(_mapingConfig).Include(x => x.Genre);
+            var query = db.Artist.ProjectTo<ArtistView>(_mapingConfig).Include(x => x.Category);
 
             List<ArtistView> artists = await query.ToListAsync();
             var allArtist = artists
@@ -40,21 +40,24 @@ namespace MyTrBox_WebAPI.Services
             };
         }
 
-        public async Task<ArtistView> GetArtist(Guid id)
+        public async Task<PagedResult<SongView>> GetSongsByArtistAsync(Guid Id, PagingOptions pagingOptions)
         {
-            var entity = await db.Artist.SingleOrDefaultAsync(x => x.id == id);
+            var query = db.Song.Where(x => x.ArtistId == Id).ProjectTo<SongView>(_mapingConfig).Include(x => x.Artist);
 
-            if (entity == null) {
-                return null;
-            }
-            var mapper = _mapingConfig.CreateMapper();
-            return mapper.Map<ArtistView>(entity);
-
+            List<SongView> songs = await query.ToListAsync();
+            var allSongs = songs
+                .Skip(pagingOptions.Offset.Value)
+                .Take(pagingOptions.Limit.Value);
+            return new PagedResult<SongView>
+            {
+                Items = allSongs,
+                TotalSize = songs.Count
+            };
         }
 
         public async Task<Guid> SaveArtist(ArtistForm artist)
         {
-            var genre =  db.Genre.SingleOrDefault(x => x.Id == artist.GenreId);
+            var genre =  db.Category.SingleOrDefault(x => x.Id == artist.CategoryId);
 
             if (genre == null) throw new InvalidOperationException("Genere does not exist");
 
@@ -80,9 +83,9 @@ namespace MyTrBox_WebAPI.Services
                 id = id,
                 Name = artist.Name,
                 Image = imageUrl,
-                GenreId = genre.Id,
+                CategoryId = genre.Id,
                 Profile = artist.Profile,
-                Genre = genre
+                Category = genre
             });
 
             

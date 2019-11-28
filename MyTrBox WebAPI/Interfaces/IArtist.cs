@@ -9,7 +9,8 @@ namespace MyTrBox_WebAPI.Interfaces
 {
     public interface IArtist
     {
-        Task<ArtistView> GetArtist(Guid id);
+        Task<PagedResult<SongView>> GetSongsByArtistAsync(Guid Id, PagingOptions pagingOptions);
+
         Task<Guid> SaveArtist(ArtistForm artist);
         Task <PagedResult<ArtistView>> GetAllArtistAsync(PagingOptions pagingOptions);
     }

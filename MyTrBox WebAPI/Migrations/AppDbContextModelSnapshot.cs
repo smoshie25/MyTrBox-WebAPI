@@ -107,7 +107,7 @@ namespace MyTrBoxWebAPI.Migrations
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("GenreId");
+                    b.Property<Guid>("CategoryId");
 
                     b.Property<string>("Image");
 
@@ -118,12 +118,12 @@ namespace MyTrBoxWebAPI.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Artist");
                 });
 
-            modelBuilder.Entity("MyTrBox_WebAPI.Model.Genre", b =>
+            modelBuilder.Entity("MyTrBox_WebAPI.Model.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -134,7 +134,7 @@ namespace MyTrBoxWebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("MyTrBox_WebAPI.Model.Song", b =>
@@ -144,7 +144,11 @@ namespace MyTrBoxWebAPI.Migrations
 
                     b.Property<Guid>("ArtistId");
 
-                    b.Property<Guid>("GenreId");
+                    b.Property<Guid>("CategoryId");
+
+                    b.Property<string>("Image");
+
+                    b.Property<string>("Media");
 
                     b.Property<string>("Title");
 
@@ -432,9 +436,9 @@ namespace MyTrBoxWebAPI.Migrations
 
             modelBuilder.Entity("MyTrBox_WebAPI.Model.Artist", b =>
                 {
-                    b.HasOne("MyTrBox_WebAPI.Model.Genre", "Genre")
+                    b.HasOne("MyTrBox_WebAPI.Model.Category", "Category")
                         .WithMany("Artists")
-                        .HasForeignKey("GenreId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

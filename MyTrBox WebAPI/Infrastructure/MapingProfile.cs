@@ -14,14 +14,20 @@ namespace MyTrBox_WebAPI.Infrastructure
             CreateMap<Artist, ArtistView>()
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
                     Link.To(
-                        nameof(Controllers.ArtistController.GetArtistById),
+                        nameof(Controllers.ArtistController.GetArtistSongs),
                         new { artistID = src.id }))); 
 
-            CreateMap<Genre, GenreView>()
+            CreateMap<Category, CategoryView>()
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
                     Link.To(
-                        nameof(Controllers.GenreController.GetGenreArtist),
+                        nameof(Controllers.CategoryController.GetGenreArtist),
                         new { genreID = src.Id }))); 
+
+            CreateMap<Song, SongView>()
+                .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
+                    Link.To(
+                        nameof(Controllers.SongController.GetSongById),
+                        new { genreID = src.SongId }))); 
         }
     }
 }

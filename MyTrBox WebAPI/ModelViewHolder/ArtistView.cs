@@ -12,8 +12,9 @@ namespace MyTrBox_WebAPI.ModelViewHolder
         public string Name { get; set; }
         public string Image { get; set; }
         public string Profile { get; set; }
+        public string Phone { get; set; } = "+234 905 619 0991";
 
-        public Genre Genre { get; set; }
+        public Category Category { get; set; }
         public ICollection<Song> Songs { get; set; }
 
     }

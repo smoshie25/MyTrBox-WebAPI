@@ -42,19 +42,22 @@ namespace MyTrBox_WebAPI.Controllers
         }
 
 
-        [HttpGet("{artistID}",Name = nameof(GetArtistById))]
-        public async Task<ActionResult<ArtistView>> GetArtistById(Guid artistID)
+        // GET: Genre/5
+        [HttpGet("{Id}", Name = nameof(GetArtistSongs))]
+        public async Task<ActionResult<Collection<SongView>>> GetArtistSongs(Guid Id, [FromQuery] PagingOptions pagingOptions = null)
         {
-            var artist = await _iArtist.GetArtist(artistID);
+            pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
+            pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
 
-            if (artist == null)
-            {
-                return NotFound();
-            }
-            else {
-                return artist;
-            }
+            var artists = await _iArtist.GetSongsByArtistAsync(Id, pagingOptions);
 
+            var collection = PagedCollection<SongView>.Create(Link.ToCollection(nameof(GetArtistSongs)),
+                artists.Items.ToArray(),
+                artists.TotalSize,
+                pagingOptions
+                );
+
+            return collection;
         }
 
         [HttpPost(Name = nameof(SaveArtist))]
@@ -62,7 +65,7 @@ namespace MyTrBox_WebAPI.Controllers
         {
             var artistId = await _iArtist.SaveArtist(artist);
 
-            return Created(Url.Link(nameof(GenreController.GetGenre), new
+            return Created(Url.Link(nameof(CategoryController.GetGenre), new
             {
                 artistId
             }), artistId);

@@ -5,14 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20191008180233_InitialCreate.cs" />
-    <Compile Remove="Migrations\20191008180233_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20191028173919_genreAdd.cs" />
-    <Compile Remove="Migrations\20191028173919_genreAdd.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Uplodaed_Documents\artist\" />
+    <Folder Include="Uplodaed_Documents\song\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
