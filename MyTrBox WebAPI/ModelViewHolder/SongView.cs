@@ -13,8 +13,12 @@ namespace MyTrBox_WebAPI.ModelViewHolder
         public string Title { get; set; }
         public string Media { get; set; }
         public string Image { get; set; }
+        public Form Song { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Artist Artist { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public GenreView Genre { get; set; }
     }
 }

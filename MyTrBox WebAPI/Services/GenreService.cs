@@ -11,43 +11,43 @@ using System.Threading.Tasks;
 
 namespace MyTrBox_WebAPI.Services
 {
-    public class CategoryService : ICategory
+    public class GenreService : IGenre
     {
         private readonly AppDbContext db;
         private readonly IConfigurationProvider _mapingConfig;
-        public CategoryService(AppDbContext appDbContext,
+        public GenreService(AppDbContext appDbContext,
             IConfigurationProvider mapingConfig)
         {
             db = appDbContext;
             _mapingConfig = mapingConfig;
         }
 
-        public async Task<IEnumerable<CategoryView>> GetAllCategoryAsync()
+        public async Task<IEnumerable<GenreView>> GetAllGenreAsync()
         {
-            var query = db.Category.ProjectTo<CategoryView>(_mapingConfig);
+            var query = db.Genre.ProjectTo<GenreView>(_mapingConfig);
 
             return await query.ToArrayAsync();
         }
 
-        public async Task<PagedResult<ArtistView>> GetArtistByCategoryAsync(Guid Id, PagingOptions pagingOptions)
+        public async Task<PagedResult<SongView>> GetSongsByGenreAsync(Guid Id, PagingOptions pagingOptions)
         {
-            var query = db.Artist.Where(x => x.CategoryId == Id).ProjectTo<ArtistView>(_mapingConfig).Include(x => x.Category);
+            var query = db.Song.Where(x => x.GenreId == Id).ProjectTo<SongView>(_mapingConfig).Include(x => x.Genre);
 
-            List<ArtistView> artists = await query.ToListAsync();
-            var allArtist = artists
+            List<SongView> Songs = await query.ToListAsync();
+            var allSong = Songs
                 .Skip(pagingOptions.Offset.Value)
                 .Take(pagingOptions.Limit.Value);
-            return new PagedResult<ArtistView>
+            return new PagedResult<SongView>
             {
-                Items = allArtist,
-                TotalSize = artists.Count
+                Items = allSong,
+                TotalSize = Songs.Count
             };
         }
 
-        public async Task<Guid> SaveCategory(CategoryForm genre)
+        public async Task<Guid> SaveGenre(GenreForm genre)
         {
             var id = Guid.NewGuid();
-            db.Category.Add(new Category {
+            db.Genre.Add(new Genre {
                 Id = id,
                 Name = genre.Name,
                 Description = genre.Description

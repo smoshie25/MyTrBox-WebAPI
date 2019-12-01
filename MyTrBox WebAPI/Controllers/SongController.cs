@@ -62,7 +62,7 @@ namespace MyTrBox_WebAPI.Controllers
         {
             var songId = await _iSong.SaveSong(songForm);
 
-            return Created(Url.Link(nameof(CategoryController.GetGenre), new
+            return Created(Url.Link(nameof(CategoryController.GetCategory), new
             {
                 songId
             }), songId);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MyTrBox_WebAPI.Infrastructure;
 using MyTrBox_WebAPI.Interfaces;
 using MyTrBox_WebAPI.Model;
 using MyTrBox_WebAPI.ModelViewHolder;
@@ -24,17 +25,24 @@ namespace MyTrBox_WebAPI.Controllers
         }
 
         // GET: Genre
-        [HttpGet(Name = nameof(GetGenre))]
-        public async Task<ActionResult<Collection<CategoryView>>> GetGenre()
+        [HttpGet(Name = nameof(GetCategory))]
+        public async Task<ActionResult<Collection<CategoryView>>> GetCategory()
         {
             var genres = await _genre.GetAllCategoryAsync();
 
             var collection = new Collection<CategoryView>
             {
-                Self = Link.ToCollection(nameof(GetGenre)),
+                Self = Link.ToCollection(nameof(GetCategory)),
+                Create = FormMetadata.FromModel(
+                        new CategoryForm(),
+                        Link.ToForm(
+                            nameof(CategoryController.PostCategory),
+                            null,
+                            Link.PostMethod,
+                            Form.CreateRelation)),
                 Value = genres.ToArray()
+                
             };
-
             return collection;
         }
 
@@ -57,12 +65,12 @@ namespace MyTrBox_WebAPI.Controllers
         }
 
         // POST: api/Genre
-        [HttpPost(Name = nameof(Post))]
-        public async Task<ActionResult> Post([FromBody] CategoryForm genre)
+        [HttpPost(Name = nameof(PostCategory))]
+        public async Task<ActionResult> PostCategory([FromBody] CategoryForm genre)
         {
             var genreId = await _genre.SaveCategory(genre);
 
-            return Created(Url.Link(nameof(CategoryController.GetGenre), new {
+            return Created(Url.Link(nameof(CategoryController.GetCategory), new {
                 genreId
             }) , new { Id = genreId });
         }

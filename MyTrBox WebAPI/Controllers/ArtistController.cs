@@ -65,7 +65,7 @@ namespace MyTrBox_WebAPI.Controllers
         {
             var artistId = await _iArtist.SaveArtist(artist);
 
-            return Created(Url.Link(nameof(CategoryController.GetGenre), new
+            return Created(Url.Link(nameof(CategoryController.GetCategory), new
             {
                 artistId
             }), artistId);

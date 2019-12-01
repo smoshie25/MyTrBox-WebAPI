@@ -18,6 +18,8 @@ namespace MyTrBox_WebAPI.Model
         public Guid CategoryId { get; set; }
         // Navigation property
         public Category Category { get; set; }
+        public ICollection<SongAlbum> SongAlbums { get; set; }
+        public ICollection<VideoAlbum> VideoAlbums { get; set; }
         public ICollection<Song> Songs { get; set; }
     }
 }

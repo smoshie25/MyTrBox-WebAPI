@@ -95,6 +95,7 @@ namespace MyTrBox_WebAPI
             services.AddScoped<IAccount, RegisterService>();
             services.AddScoped<ICategory, CategoryService>();
             services.AddScoped<ISong, SongService>();
+            services.AddScoped<IGenre, GenreService>();
 
             services.AddAutoMapper(
                 options => options.AddProfile<MapingProfile>(), typeof(Startup));

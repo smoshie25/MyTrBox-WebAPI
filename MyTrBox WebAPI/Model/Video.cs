@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyTrBox_WebAPI.Model
 {
-    public class Song
+    public class Video
 {
         public Guid Id { get; set; }
         public Guid GenreId { get; set; }

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using MyTrBox_WebAPI.Infrastructure;
+using MyTrBox_WebAPI.ModelViewHolder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
-using MyTrBox_WebAPI.Infrastructure;
-using MyTrBox_WebAPI.Model;
-using MyTrBox_WebAPI.ModelViewHolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +20,23 @@ namespace MyTrBox_WebAPI.Filter
         {
             _urlHelperFactory = urlHelperFactory;
         }
-        public Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
-        {
-            var objectResult = context.Result as ObjectResult;
-            bool shouldSkip = objectResult?.StatusCode >= 400
-                || objectResult?.Value == null
-                || objectResult?.Value as Resource == null;
 
-            if (shouldSkip) return next();
+        public Task OnResultExecutionAsync(
+            ResultExecutingContext context, ResultExecutionDelegate next)
+        {
+            var asObjectResult = context.Result as ObjectResult;
+            bool shouldSkip = asObjectResult?.StatusCode >= 400
+                || asObjectResult?.Value == null
+                || asObjectResult?.Value as Resource == null;
+
+            if (shouldSkip)
+            {
+                return next();
+            }
 
             var rewriter = new LinkRewriter(_urlHelperFactory.GetUrlHelper(context));
-            RewriteAllLinks(objectResult.Value,rewriter);
+            RewriteAllLinks(asObjectResult.Value, rewriter);
+
             return next();
         }
 
@@ -39,9 +45,8 @@ namespace MyTrBox_WebAPI.Filter
             if (model == null) return;
 
             var allProperties = model
-                .GetType()
-                .GetTypeInfo()
-                .DeclaredProperties
+                .GetType().GetTypeInfo()
+                .GetProperties()
                 .Where(p => p.CanRead)
                 .ToArray();
 
@@ -118,5 +123,6 @@ namespace MyTrBox_WebAPI.Filter
                 }
             }
         }
+
     }
 }

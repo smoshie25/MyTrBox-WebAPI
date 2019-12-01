@@ -11,5 +11,9 @@ namespace MyTrBox_WebAPI.ModelViewHolder
     {
         [JsonIgnore]
         public Link Self { get; set; }
+
+        [JsonProperty(Order = -5,
+            NullValueHandling = NullValueHandling.Ignore)]
+        public Form Create { get; set; }
     }
 }

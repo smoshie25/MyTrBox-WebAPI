@@ -56,7 +56,11 @@ namespace MyTrBox_WebAPI.Services
         {
             var artist =  db.Artist.SingleOrDefault(x => x.id == songForm.ArtistId);
 
-            if (artist == null) throw new InvalidOperationException("Genere does not exist");
+            if (artist == null) throw new InvalidOperationException("Artist does not exist");
+            
+            var genre =  db.Genre.SingleOrDefault(x => x.Id == songForm.GenreId);
+
+            if (genre == null) throw new InvalidOperationException("Genere does not exist");
 
             var media = songForm.Media;
             // Saving Song on Server
@@ -94,10 +98,12 @@ namespace MyTrBox_WebAPI.Services
 
             db.Song.Add(new Song
             {
-                SongId = id,
+                Id = id,
                 Title = songForm.Title,
                 Media = MediaUrl,
                 ArtistId = artist.id,
+                GenreId = genre.Id,
+                Genre = genre,
                 Artist = artist,
                 Image = imageUrl
             });
