@@ -153,7 +153,8 @@ namespace MyTrBox_WebAPI
                 x.Password.RequiredLength = 6;
                 x.Password.RequireUppercase = false;
                 x.Password.RequireLowercase = false;
-                x.Password.RequireNonAlphanumeric = true;
+                x.Password.RequireNonAlphanumeric = false;
+                x.Password.RequireDigit = false;
             });
             builder = new IdentityBuilder(
                 builder.UserType,

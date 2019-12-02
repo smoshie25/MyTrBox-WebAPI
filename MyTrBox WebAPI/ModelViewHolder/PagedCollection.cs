@@ -10,11 +10,11 @@ namespace MyTrBox_WebAPI.ModelViewHolder
     public class PagedCollection <T> : Collection<T>
 {
         public static PagedCollection<T> Create(
-             Link self, T[] items, int size, PagingOptions pagingOptions)
-             => Create<PagedCollection<T>>(self, items, size, pagingOptions);
+             Link self, T[] items, int size, PagingOptions pagingOptions, Form form)
+             => Create<PagedCollection<T>>(self, items, size, pagingOptions,form);
 
         public static TResponse Create<TResponse>(
-            Link self, T[] items, int size, PagingOptions pagingOptions)
+            Link self, T[] items, int size, PagingOptions pagingOptions,Form form)
             where TResponse : PagedCollection<T>, new()
             => new TResponse
             {
@@ -26,7 +26,8 @@ namespace MyTrBox_WebAPI.ModelViewHolder
                 First = self,
                 Next = GetNextLink(self, size, pagingOptions),
                 Previous = GetPreviousLink(self, size, pagingOptions),
-                Last = GetLastLink(self, size, pagingOptions)
+                Last = GetLastLink(self, size, pagingOptions),
+                Form = form
             };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -45,6 +46,9 @@ namespace MyTrBox_WebAPI.ModelViewHolder
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Link Next { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public Form Form { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Link Last { get; set; }

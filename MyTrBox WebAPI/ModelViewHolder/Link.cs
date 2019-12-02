@@ -44,15 +44,15 @@ namespace MyTrBox_WebAPI.ModelViewHolder
                 Relations = relations
             };
 
-        [JsonProperty(Order = -4)]
+        [JsonProperty(Order = -5)]
         public string Href { get; set; }
 
-        [JsonProperty(Order = -3,
+        [JsonProperty(Order = -4,
             PropertyName = "rel",
             NullValueHandling = NullValueHandling.Ignore)]
         public string[] Relations { get; set; }
 
-        [JsonProperty(Order = -2,
+        [JsonProperty(Order = -3,
             DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(GetMethod)]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MyTrBox_WebAPI.Infrastructure;
 using MyTrBox_WebAPI.Interfaces;
 using MyTrBox_WebAPI.Model;
 using MyTrBox_WebAPI.ModelViewHolder;
@@ -35,7 +36,14 @@ namespace MyTrBox_WebAPI.Controllers
             var collection = PagedCollection<ArtistView>.Create(Link.ToCollection(nameof(GetArtist)),
                 artists.Items.ToArray(),
                 artists.TotalSize,
-                pagingOptions
+                pagingOptions,
+                FormMetadata.FromModel(
+                        new ArtistForm(),
+                        Link.ToForm(
+                            nameof(ArtistController.SaveArtist),
+                            null,
+                            Link.PostMethod,
+                            Form.CreateRelation))
                 ); 
 
             return collection;
@@ -54,7 +62,7 @@ namespace MyTrBox_WebAPI.Controllers
             var collection = PagedCollection<SongView>.Create(Link.ToCollection(nameof(GetArtistSongs)),
                 artists.Items.ToArray(),
                 artists.TotalSize,
-                pagingOptions
+                pagingOptions,null
                 );
 
             return collection;

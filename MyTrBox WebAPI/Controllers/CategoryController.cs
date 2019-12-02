@@ -33,7 +33,7 @@ namespace MyTrBox_WebAPI.Controllers
             var collection = new Collection<CategoryView>
             {
                 Self = Link.ToCollection(nameof(GetCategory)),
-                Create = FormMetadata.FromModel(
+                Form = FormMetadata.FromModel(
                         new CategoryForm(),
                         Link.ToForm(
                             nameof(CategoryController.PostCategory),
@@ -58,7 +58,7 @@ namespace MyTrBox_WebAPI.Controllers
             var collection = PagedCollection<ArtistView>.Create(Link.ToCollection(nameof(GetGenreArtist)),
                 artists.Items.ToArray(),
                 artists.TotalSize,
-                pagingOptions
+                pagingOptions,null
                 );
 
             return collection;

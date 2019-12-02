@@ -14,6 +14,7 @@ namespace MyTrBox_WebAPI.ModelViewHolder
         [Required]
         public Guid CategoryId { get; set; }
         public string Profile { get; set; }
+        [Required]
         public IFormFile Image { get; set; }
     }
 }

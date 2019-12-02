@@ -35,7 +35,7 @@ namespace MyTrBox_WebAPI.Controllers
             var collection = PagedCollection<SongView>.Create(Link.ToCollection(nameof(GetSong)),
                 songs.Items.ToArray(),
                 songs.TotalSize,
-                pagingOptions
+                pagingOptions,null
                 ); 
 
             return collection;
