@@ -22,6 +22,7 @@ namespace MyTrBox_WebAPI.Controllers
                 Genre = Link.ToCollection(nameof(GenreController.GetGenre)),
                 Artist = Link.ToCollection(nameof(ArtistController.GetArtist)),
                 Song = Link.ToCollection(nameof(SongController.GetSong)),
+                Video = Link.ToCollection(nameof(VideoController.GetVideo)),
                 
             };
 

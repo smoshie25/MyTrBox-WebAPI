@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MyTrBox_WebAPI.ModelViewHolder
 {
-    public class SongForm
-{
+    public class VideoForm
+    {
         [Required]
         public string Title { get; set; }
         [Required]

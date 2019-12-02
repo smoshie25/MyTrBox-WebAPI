@@ -16,6 +16,6 @@ namespace MyTrBox_WebAPI.Model
         public string Image { get; set; }
         public Artist Artist { get; set; }
         public Genre Genre { get; set; }
-        public SongAlbum Album { get; set; }
+        public VideoAlbum Album { get; set; }
     }
 }

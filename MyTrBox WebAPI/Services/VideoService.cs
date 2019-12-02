@@ -14,33 +14,33 @@ using System.Threading.Tasks;
 
 namespace MyTrBox_WebAPI.Services
 {
-    public class SongService : ISong
+    public class VideoService : IVideo
     {
         private readonly AppDbContext db;
         private readonly IConfigurationProvider _mapingConfig;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public SongService(AppDbContext appDbContext, 
+        public VideoService(AppDbContext appDbContext, 
             IConfigurationProvider mapingConfig, IHttpContextAccessor _httpContextAccessor) {
             db = appDbContext;
             _mapingConfig = mapingConfig;
             httpContextAccessor = _httpContextAccessor;
         }
 
-        public async Task<PagedResult<SongView>> GetAllSongAsync(PagingOptions pagingOptions)
+        public async Task<PagedResult<VideoView>> GetAllVideoAsync(PagingOptions pagingOptions)
         {
-            var query = db.Song.ProjectTo<SongView>(_mapingConfig).Include(x => x.Artist);
+            var query = db.Video.ProjectTo<VideoView>(_mapingConfig).Include(x => x.Artist);
 
-            List<SongView> songs = await query.ToListAsync();
-            var allArtist = songs
+            List<VideoView> Videos = await query.ToListAsync();
+            var allArtist = Videos
                 .Skip(pagingOptions.Offset.Value)
                 .Take(pagingOptions.Limit.Value);
-            return new PagedResult<SongView> { 
+            return new PagedResult<VideoView> { 
                 Items = allArtist,
-                TotalSize = songs.Count
+                TotalSize = Videos.Count
             };
         }
 
-        public async Task<SongView> GetSong(Guid id)
+        public async Task<VideoView> GetVideo(Guid id)
         {
             var entity = await db.Artist.SingleOrDefaultAsync(x => x.id == id);
 
@@ -48,49 +48,49 @@ namespace MyTrBox_WebAPI.Services
                 return null;
             }
             var mapper = _mapingConfig.CreateMapper();
-            return mapper.Map<SongView>(entity);
+            return mapper.Map<VideoView>(entity);
 
         }
 
-        public async Task<Guid> SaveSong(SongForm songForm)
+        public async Task<Guid> SaveVideo(VideoForm VideoForm)
         {
-            var artist =  db.Artist.SingleOrDefault(x => x.id == songForm.ArtistId);
+            var artist =  db.Artist.SingleOrDefault(x => x.id == VideoForm.ArtistId);
 
             if (artist == null) throw new InvalidOperationException("Artist does not exist");
             
-            var genre =  db.Genre.SingleOrDefault(x => x.Id == songForm.GenreId);
+            var genre =  db.Genre.SingleOrDefault(x => x.Id == VideoForm.GenreId);
 
             if (genre == null) throw new InvalidOperationException("Genere does not exist");
-
-            var album = db.SongAlbum.SingleOrDefault(x => x.Id == songForm.AlbumId);
+            
+            var album =  db.VideoAlbum.SingleOrDefault(x => x.Id == VideoForm.AlbumId);
 
             if (album == null) throw new InvalidOperationException("Album does not exist");
 
-            var media = songForm.Media;
-            // Saving Song on Server
+            var media = VideoForm.Media;
+            // Saving Video on Server
             var id = Guid.NewGuid();
             string extension = media.FileName.Split(".").LastOrDefault();
             var url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
 
-            var MediaUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/song/" + id + "." + extension;
+            var MediaUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/Video/" + id + "." + extension;
             if (media.Length > 0)
             {
-                using (var fileStream = new FileStream("Uplodaed_Documents/song/" + id+"."+extension, FileMode.Create))
+                using (var fileStream = new FileStream("Uplodaed_Documents/Video/" + id+"."+extension, FileMode.Create))
                 {
                     media.CopyTo(fileStream);
                 }
             } else throw new InvalidOperationException("Invalid File");
 
 
-            var image = songForm.Image;
+            var image = VideoForm.Image;
             // Saving Image on Server
             extension = image.FileName.Split(".").LastOrDefault();
             url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
 
-            var imageUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/song/" + id + "." + extension;
+            var imageUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/Video/" + id + "." + extension;
             if (image.Length > 0)
             {
-                using (var fileStream = new FileStream("Uplodaed_Documents/song/" + id + "." + extension, FileMode.Create))
+                using (var fileStream = new FileStream("Uplodaed_Documents/Video/" + id + "." + extension, FileMode.Create))
                 {
                     image.CopyTo(fileStream);
                 }
@@ -100,10 +100,10 @@ namespace MyTrBox_WebAPI.Services
 
 
 
-            db.Song.Add(new Song
+            db.Video.Add(new Video
             {
                 Id = id,
-                Title = songForm.Title,
+                Title = VideoForm.Title,
                 Media = MediaUrl,
                 ArtistId = artist.id,
                 GenreId = genre.Id,

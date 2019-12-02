@@ -58,6 +58,20 @@ namespace MyTrBox_WebAPI.Infrastructure
                             null,
                             Link.PostMethod,
                             Form.CreateRelation))));
+
+            CreateMap<Video, VideoView>()
+                .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
+                    Link.To(
+                        nameof(Controllers.VideoController.GetVideoById),
+                        new { genreID = src.Id })))
+                .ForMember(dest => dest.Video, opt => opt.MapFrom(src =>
+                    FormMetadata.FromModel(
+                        new VideoForm(),
+                        Link.ToForm(
+                            nameof(Controllers.VideoController.SaveVideo),
+                            null,
+                            Link.PostMethod,
+                            Form.CreateRelation))));
         }
     }
 }

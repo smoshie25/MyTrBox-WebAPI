@@ -12,5 +12,6 @@ namespace MyTrBox_WebAPI.ModelViewHolder
         public Link Category { get; set; }
         public Link Genre { get; set; }
         public Link Song { get; set; }
+        public Link Video { get; set; }
     }
 }

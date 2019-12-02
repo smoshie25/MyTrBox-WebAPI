@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Uplodaed_Documents\artist\" />
+    <Folder Include="Uplodaed_Documents\video\" />
     <Folder Include="Uplodaed_Documents\song\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

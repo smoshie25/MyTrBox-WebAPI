@@ -13,34 +13,34 @@ namespace MyTrBox_WebAPI.Controllers
 {
     [Route("/[controller]")]
     [ApiController]
-    public class SongController : ControllerBase
+    public class VideoController : ControllerBase
     {
-        private readonly ISong _iSong;
+        private readonly IVideo _iVideo;
         private readonly PagingOptions _defaultPagingOptions;
 
-        public SongController(ISong iSong, IOptions<PagingOptions> defaultPagingOptions)
+        public VideoController(IVideo iVideo, IOptions<PagingOptions> defaultPagingOptions)
         {
-            _iSong = iSong;
+            _iVideo = iVideo;
             _defaultPagingOptions = defaultPagingOptions.Value;
         }
 
-        [HttpGet(Name = nameof(GetSong))]
-        public async Task<ActionResult<Collection<SongView>>> GetSong
+        [HttpGet(Name = nameof(GetVideo))]
+        public async Task<ActionResult<Collection<VideoView>>> GetVideo
             ([FromQuery] PagingOptions pagingOptions = null)
         {
             pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
             pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
 
-            var songs = await _iSong.GetAllSongAsync(pagingOptions);
+            var Videos = await _iVideo.GetAllVideoAsync(pagingOptions);
 
-            var collection = PagedCollection<SongView>.Create(Link.ToCollection(nameof(GetSong)),
-                songs.Items.ToArray(),
-                songs.TotalSize,
+            var collection = PagedCollection<VideoView>.Create(Link.ToCollection(nameof(GetVideo)),
+                Videos.Items.ToArray(),
+                Videos.TotalSize,
                 pagingOptions,
                 FormMetadata.FromModel(
-                        new SongForm(),
+                        new VideoForm(),
                         Link.ToForm(
-                            nameof(SongController.SaveSong),
+                            nameof(VideoController.SaveVideo),
                             null,
                             Link.PostMethod,
                             Form.CreateRelation))
@@ -50,30 +50,30 @@ namespace MyTrBox_WebAPI.Controllers
         }
 
 
-        [HttpGet("{songID}",Name = nameof(GetSongById))]
-        public async Task<ActionResult<SongView>> GetSongById(Guid songID)
+        [HttpGet("{VideoID}",Name = nameof(GetVideoById))]
+        public async Task<ActionResult<VideoView>> GetVideoById(Guid VideoID)
         {
-            var song = await _iSong.GetSong(songID);
+            var Video = await _iVideo.GetVideo(VideoID);
 
-            if (song == null)
+            if (Video == null)
             {
                 return NotFound();
             }
             else {
-                return song;
+                return Video;
             }
 
         }
 
-        [HttpPost(Name = nameof(SaveSong))]
-        public async Task<ActionResult> SaveSong([FromForm] SongForm songForm) 
+        [HttpPost(Name = nameof(SaveVideo))]
+        public async Task<ActionResult> SaveVideo([FromForm] VideoForm VideoForm) 
         {
-            var songId = await _iSong.SaveSong(songForm);
+            var VideoId = await _iVideo.SaveVideo(VideoForm);
 
             return Created(Url.Link(nameof(CategoryController.GetCategory), new
             {
-                songId
-            }), songId);
+                VideoId
+            }), VideoId);
         }
     }
 }
