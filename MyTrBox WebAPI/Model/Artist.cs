@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,9 +18,13 @@ namespace MyTrBox_WebAPI.Model
         // Foreign Key
         public Guid CategoryId { get; set; }
         // Navigation property
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Category Category { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ICollection<SongAlbum> SongAlbums { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ICollection<VideoAlbum> VideoAlbums { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ICollection<Song> Songs { get; set; }
     }
 }

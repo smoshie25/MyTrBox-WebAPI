@@ -281,8 +281,6 @@ namespace MyTrBoxWebAPI.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("AlbumId");
-
                     b.Property<Guid>("ArtistId");
 
                     b.Property<Guid>("GenreId");
@@ -293,11 +291,9 @@ namespace MyTrBoxWebAPI.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<Guid?>("VideoAlbumId");
+                    b.Property<Guid>("VideoAlbumId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AlbumId");
 
                     b.HasIndex("ArtistId");
 
@@ -558,11 +554,6 @@ namespace MyTrBoxWebAPI.Migrations
 
             modelBuilder.Entity("MyTrBox_WebAPI.Model.Video", b =>
                 {
-                    b.HasOne("MyTrBox_WebAPI.Model.SongAlbum", "Album")
-                        .WithMany()
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MyTrBox_WebAPI.Model.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
@@ -573,9 +564,10 @@ namespace MyTrBoxWebAPI.Migrations
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyTrBox_WebAPI.Model.VideoAlbum")
+                    b.HasOne("MyTrBox_WebAPI.Model.VideoAlbum", "VideoAlbum")
                         .WithMany("Videos")
-                        .HasForeignKey("VideoAlbumId");
+                        .HasForeignKey("VideoAlbumId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyTrBox_WebAPI.Model.VideoAlbum", b =>

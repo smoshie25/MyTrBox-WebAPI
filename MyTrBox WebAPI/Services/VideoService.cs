@@ -52,21 +52,21 @@ namespace MyTrBox_WebAPI.Services
 
         }
 
-        public async Task<Guid> SaveVideo(VideoForm VideoForm)
+        public async Task<Guid> SaveVideo(VideoForm form)
         {
-            var artist =  db.Artist.SingleOrDefault(x => x.id == VideoForm.ArtistId);
+            var artist =  db.Artist.SingleOrDefault(x => x.id == form.ArtistId);
 
             if (artist == null) throw new InvalidOperationException("Artist does not exist");
             
-            var genre =  db.Genre.SingleOrDefault(x => x.Id == VideoForm.GenreId);
+            var genre =  db.Genre.SingleOrDefault(x => x.Id == form.GenreId);
 
             if (genre == null) throw new InvalidOperationException("Genere does not exist");
             
-            var album =  db.VideoAlbum.SingleOrDefault(x => x.Id == VideoForm.AlbumId);
+            var album =  db.VideoAlbum.SingleOrDefault(x => x.Id == form.AlbumId);
 
             if (album == null) throw new InvalidOperationException("Album does not exist");
 
-            var media = VideoForm.Media;
+            var media = form.Media;
             // Saving Video on Server
             var id = Guid.NewGuid();
             string extension = media.FileName.Split(".").LastOrDefault();
@@ -82,7 +82,7 @@ namespace MyTrBox_WebAPI.Services
             } else throw new InvalidOperationException("Invalid File");
 
 
-            var image = VideoForm.Image;
+            var image = form.Image;
             // Saving Image on Server
             extension = image.FileName.Split(".").LastOrDefault();
             url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
@@ -103,15 +103,15 @@ namespace MyTrBox_WebAPI.Services
             db.Video.Add(new Video
             {
                 Id = id,
-                Title = VideoForm.Title,
+                Title = form.Title,
                 Media = MediaUrl,
                 ArtistId = artist.id,
                 GenreId = genre.Id,
                 Genre = genre,
                 Artist = artist,
                 Image = imageUrl,
-                AlbumId = album.Id,
-                Album = album
+                VideoAlbumId = album.Id,
+                VideoAlbum = album
             });
 
             
