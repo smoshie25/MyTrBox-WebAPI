@@ -22,14 +22,6 @@ namespace MyTrBox_WebAPI.Infrastructure
                     Link.To(
                         nameof(Controllers.CategoryController.GetGenreArtist),
                         new { genreID = src.Id })));
-                /*.ForMember(dest => dest.Form, opt => opt.MapFrom(src =>
-                    FormMetadata.FromModel(
-                        new CategoryForm(),
-                        Link.ToForm(
-                            nameof(Controllers.CategoryController.PostCategory),
-                            null,
-                            Link.PostMethod,
-                            Form.CreateRelation))));*/
 
             CreateMap<Genre, GenreView>()
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
@@ -47,15 +39,7 @@ namespace MyTrBox_WebAPI.Infrastructure
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
                     Link.To(
                         nameof(Controllers.VideoController.GetVideoById),
-                        new { genreID = src.Id })))
-                .ForMember(dest => dest.Video, opt => opt.MapFrom(src =>
-                    FormMetadata.FromModel(
-                        new VideoForm(),
-                        Link.ToForm(
-                            nameof(Controllers.VideoController.SaveVideo),
-                            null,
-                            Link.PostMethod,
-                            Form.CreateRelation))));
+                        new { genreID = src.Id })));
 
             CreateMap<SongAlbum, SongAlbumView>()
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>

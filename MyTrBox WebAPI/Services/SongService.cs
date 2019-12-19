@@ -72,7 +72,7 @@ namespace MyTrBox_WebAPI.Services
             string extension = media.FileName.Split(".").LastOrDefault();
             var url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
 
-            var MediaUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/song/" + id + "." + extension;
+            var MediaUrl = url.Split("song").FirstOrDefault() + "Uplodaed_Documents/song/" + id + "." + extension;
             if (media.Length > 0)
             {
                 using (var fileStream = new FileStream("Uplodaed_Documents/song/" + id+"."+extension, FileMode.Create))
@@ -87,7 +87,7 @@ namespace MyTrBox_WebAPI.Services
             extension = image.FileName.Split(".").LastOrDefault();
             url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
 
-            var imageUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/song/" + id + "." + extension;
+            var imageUrl = url.Split("song").FirstOrDefault() + "Uplodaed_Documents/song/" + id + "." + extension;
             if (image.Length > 0)
             {
                 using (var fileStream = new FileStream("Uplodaed_Documents/song/" + id + "." + extension, FileMode.Create))

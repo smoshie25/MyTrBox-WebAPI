@@ -42,7 +42,7 @@ namespace MyTrBox_WebAPI.Services
 
         public async Task<VideoView> GetVideo(Guid id)
         {
-            var entity = await db.Artist.SingleOrDefaultAsync(x => x.id == id);
+            var entity = await db.Video.SingleOrDefaultAsync(x => x.ArtistId == id);
 
             if (entity == null) {
                 return null;
@@ -50,6 +50,21 @@ namespace MyTrBox_WebAPI.Services
             var mapper = _mapingConfig.CreateMapper();
             return mapper.Map<VideoView>(entity);
 
+        }
+
+        public async Task<PagedResult<VideoView>> GetVideoByArtist(Guid id, PagingOptions pagingOptions)
+        {
+            var query = db.Video.Where(x=> x.ArtistId == id).ProjectTo<VideoView>(_mapingConfig).Include(x => x.Artist);
+
+            List<VideoView> Videos = await query.ToListAsync();
+            var allArtist = Videos
+                .Skip(pagingOptions.Offset.Value)
+                .Take(pagingOptions.Limit.Value);
+            return new PagedResult<VideoView>
+            {
+                Items = allArtist,
+                TotalSize = Videos.Count
+            };
         }
 
         public async Task<Guid> SaveVideo(VideoForm form)
@@ -72,7 +87,7 @@ namespace MyTrBox_WebAPI.Services
             string extension = media.FileName.Split(".").LastOrDefault();
             var url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
 
-            var MediaUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/Video/" + id + "." + extension;
+            var MediaUrl = url.Split("video").FirstOrDefault() + "Uplodaed_Documents/Video/" + id + "." + extension;
             if (media.Length > 0)
             {
                 using (var fileStream = new FileStream("Uplodaed_Documents/Video/" + id+"."+extension, FileMode.Create))
@@ -87,7 +102,7 @@ namespace MyTrBox_WebAPI.Services
             extension = image.FileName.Split(".").LastOrDefault();
             url = httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
 
-            var imageUrl = url.Split("artist").FirstOrDefault() + "Uplodaed_Documents/Video/" + id + "." + extension;
+            var imageUrl = url.Split("video").FirstOrDefault() + "Uplodaed_Documents/Video/" + id + "." + extension;
             if (image.Length > 0)
             {
                 using (var fileStream = new FileStream("Uplodaed_Documents/Video/" + id + "." + extension, FileMode.Create))

@@ -11,6 +11,7 @@ namespace MyTrBox_WebAPI.Interfaces
     {
         Task<VideoView> GetVideo(Guid id);
         Task<Guid> SaveVideo(VideoForm VideoForm);
+        Task <PagedResult<VideoView>> GetVideoByArtist(Guid id,PagingOptions pagingOptions);
         Task <PagedResult<VideoView>> GetAllVideoAsync(PagingOptions pagingOptions);
     }
 }

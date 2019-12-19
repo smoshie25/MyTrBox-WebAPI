@@ -50,18 +50,30 @@ namespace MyTrBox_WebAPI.Controllers
         }
 
 
-        [HttpGet("{VideoID}",Name = nameof(GetVideoById))]
-        public async Task<ActionResult<VideoView>> GetVideoById(Guid VideoID)
+        [HttpGet("{artistId}", Name = nameof(GetVideoById))]
+        public async Task<ActionResult<Collection<VideoView>>> GetVideoById(Guid artistId,
+            [FromQuery] PagingOptions pagingOptions = null)
         {
-            var Video = await _iVideo.GetVideo(VideoID);
+            pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
+            pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
 
-            if (Video == null)
-            {
-                return NotFound();
-            }
-            else {
-                return Video;
-            }
+
+            var Videos = await _iVideo.GetVideoByArtist(artistId,pagingOptions);
+
+            var collection = PagedCollection<VideoView>.Create(Link.ToCollection(nameof(GetVideo)),
+                Videos.Items.ToArray(),
+                Videos.TotalSize,
+                pagingOptions,
+                FormMetadata.FromModel(
+                        new VideoForm(),
+                        Link.ToForm(
+                            nameof(VideoController.SaveVideo),
+                            null,
+                            Link.PostMethod,
+                            Form.CreateRelation))
+                );
+
+            return collection;
 
         }
 

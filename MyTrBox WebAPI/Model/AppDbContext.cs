@@ -22,5 +22,6 @@ namespace MyTrBox_WebAPI.Model
         public DbSet<Video> Video { get; set; }
         public DbSet<SongAlbum> SongAlbum { get; set; }
         public DbSet<VideoAlbum> VideoAlbum { get; set; }
+        public DbSet<Promo> Promo { get; set; }
     }
 }
