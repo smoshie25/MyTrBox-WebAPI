@@ -1,11 +1,13 @@
-﻿using System;
+﻿using MyTrBox_WebAPI.Model;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyTrBox_WebAPI.Model
+namespace MyTrBox_WebAPI.ModelViewHolder
 {
-    public class Promo
+    public class PromoView : Resource
 {
         public Guid Id { get; set; }
         public Guid TypeId { get; set; }
